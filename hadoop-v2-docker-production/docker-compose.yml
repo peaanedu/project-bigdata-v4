@@ -29,20 +29,18 @@ services:
       - ./conf:/opt/bootstrap/conf:ro
       - ./scripts:/opt/bootstrap/scripts:ro
       - ./datasets:/datasets:ro
+     healthcheck:
+        test: ["CMD-SHELL", "pgrep -f DataNode >/dev/null || exit 1"]
+        interval: 30s
+        timeout: 10s
+        retries: 15
+        start_period: 120s
 #    healthcheck:
 #     test: ["CMD-SHELL", "curl -fsS http://localhost:9870/ >/dev/null || exit 1"]
 #      interval: 30s
 #      timeout: 10s
 #      retries: 10
-#      start_period: 60s
-# Add  new  
-resourcemanager:
-  healthcheck:
-    test: ["CMD-SHELL", "curl -fsS http://localhost:8088/ws/v1/cluster/info >/dev/null || exit 1"]
-    interval: 30s
-    timeout: 10s
-    retries: 20
-    start_period: 120s
+#      start_period: 60s 
 
   datanode1:
     <<: *hadoop-common
@@ -107,12 +105,19 @@ resourcemanager:
       - rm_logs:/opt/hadoop/logs
       - ./conf:/opt/bootstrap/conf:ro
       - ./scripts:/opt/bootstrap/scripts:ro
-    healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:8088/ws/v1/cluster/info >/dev/null || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 10
-      start_period: 70s
+#    healthcheck:
+#      test: ["CMD-SHELL", "curl -fsS http://localhost:8088/ws/v1/cluster/info >/dev/null || exit 1"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 10
+#      start_period: 70s
+#      resourcemanager:
+  healthcheck:
+    test: ["CMD-SHELL", "curl -fsS http://localhost:8088/ws/v1/cluster/info >/dev/null || exit 1"]
+    interval: 30s
+    timeout: 10s
+    retries: 20
+    start_period: 120s
 
   nodemanager1:
     <<: *hadoop-common
@@ -262,12 +267,18 @@ resourcemanager:
       - bigdata
     restart: unless-stopped
     command: ["bash", "/opt/bootstrap/scripts/start-hive.sh"]
+#    healthcheck:
+#      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/10000' || exit 1"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 10
+#      start_period: 90s
     healthcheck:
       test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/10000' || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 90s
+      retries: 15
+      start_period: 120s
 
   spark-master:
     <<: *hadoop-common
