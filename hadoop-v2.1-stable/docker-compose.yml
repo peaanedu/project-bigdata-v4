@@ -19,7 +19,7 @@ services:
     <<: *hadoop-common
     hostname: namenode
     container_name: namenode
-    command: ["bash", "/opt/bootstrap/start-namenode.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     ports:
       - "9870:9870"
       - "8020:8020"
@@ -40,7 +40,7 @@ services:
     <<: *hadoop-common
     hostname: datanode1
     container_name: datanode1
-    command: ["bash", "/opt/bootstrap/start-datanode.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       namenode:
         condition: service_healthy
@@ -60,7 +60,7 @@ services:
     <<: *hadoop-common
     hostname: datanode2
     container_name: datanode2
-    command: ["bash", "/opt/bootstrap/start-datanode.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       namenode:
         condition: service_healthy
@@ -74,7 +74,7 @@ services:
     <<: *hadoop-common
     hostname: datanode3
     container_name: datanode3
-    command: ["bash", "/opt/bootstrap/start-datanode.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       namenode:
         condition: service_healthy
@@ -88,7 +88,7 @@ services:
     <<: *hadoop-common
     hostname: resourcemanager
     container_name: resourcemanager
-    command: ["bash", "/opt/bootstrap/start-resourcemanager.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       namenode:
         condition: service_healthy
@@ -110,7 +110,7 @@ services:
     <<: *hadoop-common
     hostname: nodemanager1
     container_name: nodemanager1
-    command: ["bash", "/opt/bootstrap/start-nodemanager.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       resourcemanager:
         condition: service_healthy
@@ -123,7 +123,7 @@ services:
     <<: *hadoop-common
     hostname: nodemanager2
     container_name: nodemanager2
-    command: ["bash", "/opt/bootstrap/start-nodemanager.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       resourcemanager:
         condition: service_healthy
@@ -136,7 +136,7 @@ services:
     <<: *hadoop-common
     hostname: nodemanager3
     container_name: nodemanager3
-    command: ["bash", "/opt/bootstrap/start-nodemanager.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       resourcemanager:
         condition: service_healthy
@@ -149,7 +149,7 @@ services:
     <<: *hadoop-common
     hostname: historyserver
     container_name: historyserver
-    command: ["bash", "/opt/bootstrap/start-historyserver.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       resourcemanager:
         condition: service_healthy
@@ -221,7 +221,7 @@ services:
     networks:
       - bigdata
     restart: unless-stopped
-    command: ["bash", "/opt/bootstrap/scripts/start-hive.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     healthcheck:
       test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/9083' || exit 1"]
       interval: 30s
@@ -258,7 +258,7 @@ services:
     networks:
       - bigdata
     restart: unless-stopped
-    command: ["bash", "/opt/bootstrap/scripts/start-hive.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     healthcheck:
       test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/10000' || exit 1"]
       interval: 30s
@@ -283,7 +283,7 @@ services:
     restart: unless-stopped
     hostname: spark-master
     container_name: spark-master
-    command: ["bash", "/opt/bootstrap/start-spark-master.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       namenode:
         condition: service_healthy
@@ -319,7 +319,7 @@ services:
     restart: unless-stopped
     hostname: spark-worker1
     container_name: spark-worker1
-    command: ["bash", "/opt/bootstrap/start-spark-worker.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       spark-master:
         condition: service_healthy
@@ -348,7 +348,7 @@ services:
     restart: unless-stopped
     hostname: spark-worker2
     container_name: spark-worker2
-    command: ["bash", "/opt/bootstrap/start-spark-worker.sh"]
+    command: ["/bin/bash", "/scripts/start-datanode.sh"]
     depends_on:
       spark-master:
         condition: service_healthy
