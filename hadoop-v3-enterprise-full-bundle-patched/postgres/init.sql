@@ -1,0 +1,2 @@
+-- POSTGRES_DB already creates the metastore database automatically.
+-- Keep this file for future schema/bootstrap extensions.
