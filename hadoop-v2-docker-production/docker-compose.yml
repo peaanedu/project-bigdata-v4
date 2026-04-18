@@ -29,18 +29,12 @@ services:
       - ./conf:/opt/bootstrap/conf:ro
       - ./scripts:/opt/bootstrap/scripts:ro
       - ./datasets:/datasets:ro
-     healthcheck:
-        test: ["CMD-SHELL", "pgrep -f DataNode >/dev/null || exit 1"]
-        interval: 30s
-        timeout: 10s
-        retries: 15
-        start_period: 120s
-#    healthcheck:
-#     test: ["CMD-SHELL", "curl -fsS http://localhost:9870/ >/dev/null || exit 1"]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 10
-#      start_period: 60s 
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9870/ >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 15
+      start_period: 120s
 
   datanode1:
     <<: *hadoop-common
@@ -56,11 +50,11 @@ services:
       - ./conf:/opt/bootstrap/conf:ro
       - ./scripts:/opt/bootstrap/scripts:ro
     healthcheck:
-      test: ["CMD-SHELL", "jps | grep -q DataNode"]
+      test: ["CMD-SHELL", "pgrep -f DataNode >/dev/null || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 60s
+      retries: 15
+      start_period: 120s
 
   datanode2:
     <<: *hadoop-common
@@ -75,6 +69,12 @@ services:
       - datanode2_logs:/opt/hadoop/logs
       - ./conf:/opt/bootstrap/conf:ro
       - ./scripts:/opt/bootstrap/scripts:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f DataNode >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 15
+      start_period: 120s
 
   datanode3:
     <<: *hadoop-common
@@ -89,6 +89,12 @@ services:
       - datanode3_logs:/opt/hadoop/logs
       - ./conf:/opt/bootstrap/conf:ro
       - ./scripts:/opt/bootstrap/scripts:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f DataNode >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 15
+      start_period: 120s
 
   resourcemanager:
     <<: *hadoop-common
@@ -105,19 +111,12 @@ services:
       - rm_logs:/opt/hadoop/logs
       - ./conf:/opt/bootstrap/conf:ro
       - ./scripts:/opt/bootstrap/scripts:ro
-#    healthcheck:
-#      test: ["CMD-SHELL", "curl -fsS http://localhost:8088/ws/v1/cluster/info >/dev/null || exit 1"]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 10
-#      start_period: 70s
-#      resourcemanager:
-  healthcheck:
-    test: ["CMD-SHELL", "curl -fsS http://localhost:8088/ws/v1/cluster/info >/dev/null || exit 1"]
-    interval: 30s
-    timeout: 10s
-    retries: 20
-    start_period: 120s
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8088/ws/v1/cluster/info >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 20
+      start_period: 120s
 
   nodemanager1:
     <<: *hadoop-common
@@ -176,8 +175,8 @@ services:
       test: ["CMD-SHELL", "curl -fsS http://localhost:19888/ >/dev/null || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 70s
+      retries: 15
+      start_period: 120s
 
   postgres:
     image: postgres:${POSTGRES_VERSION}
@@ -236,8 +235,8 @@ services:
       test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/9083' || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 90s
+      retries: 15
+      start_period: 120s
 
   hiveserver2:
     build:
@@ -256,6 +255,8 @@ services:
     depends_on:
       hive-metastore:
         condition: service_healthy
+      resourcemanager:
+        condition: service_healthy
     ports:
       - "10000:10000"
       - "10002:10002"
@@ -267,12 +268,6 @@ services:
       - bigdata
     restart: unless-stopped
     command: ["bash", "/opt/bootstrap/scripts/start-hive.sh"]
-#    healthcheck:
-#      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/10000' || exit 1"]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 10
-#      start_period: 90s
     healthcheck:
       test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/10000' || exit 1"]
       interval: 30s
@@ -300,8 +295,8 @@ services:
       test: ["CMD-SHELL", "curl -fsS http://localhost:8080/ >/dev/null || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 70s
+      retries: 15
+      start_period: 120s
 
   spark-worker1:
     <<: *hadoop-common
@@ -371,8 +366,8 @@ services:
       test: ["CMD-SHELL", "curl -fsS http://localhost:8888/api >/dev/null || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 40s
+      retries: 15
+      start_period: 120s
 
 networks:
   bigdata:
