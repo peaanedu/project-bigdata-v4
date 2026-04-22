@@ -291,7 +291,7 @@ services:
     networks: [bigdata]
 
   spark-master:
-    image: bitnami/spark:3.5.1
+    image: bitnami/spark:latest
     container_name: spark-master
     restart: unless-stopped
     depends_on:
@@ -317,7 +317,7 @@ services:
     networks: [bigdata]
 
   spark-worker:
-    image: bitnami/spark:3.5.1
+    image: bitnami/spark:latest
     container_name: spark-worker
     restart: unless-stopped
     depends_on:
