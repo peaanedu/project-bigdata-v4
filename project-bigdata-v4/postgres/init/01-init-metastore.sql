@@ -1,0 +1,1 @@
+-- Hive metastore database is created automatically from POSTGRES_DB.

@@ -1,0 +1,4 @@
+order_id,customer_name,product_name,quantity,unit_price,order_date
+SO-0001,Sok Dara,Laptop,2,850.00,2026-04-01
+SO-0002,Chan Mony,Mouse,5,15.50,2026-04-02
+SO-0003,Vannak Pich,Keyboard,3,28.75,2026-04-03
